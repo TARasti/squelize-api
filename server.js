@@ -39,6 +39,9 @@ app.get("/", (req, resp) => {
         }
     });
 });
+app.get('*', function(req, res) {
+    res.redirect('/');
+});
 // port
 const PORT = process.env.PORT || 3000;
 // starting server
