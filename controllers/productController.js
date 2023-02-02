@@ -7,18 +7,20 @@ const Review = db.reviews;
 const addProduct = async (req, res) => {
     let response = {};
     try {        
+        user = req.session.user;
         const info = {
             title: req.body.title,
             price: req.body.price,
             description: req.body.description,
-            published: req.body.published ? req.body.published : false
+            published: req.body.published ? req.body.published : false,
+            user_id: user.id
         };
         const product = await Product.create(info);
         response = apiResponse(true, 200, "Product inserted successfully", product);
     } catch (error) {
         response = apiResponse(false, 500, error.message, null);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const getAllProducts = async (req, res) => {
@@ -39,7 +41,7 @@ const getAllProducts = async (req, res) => {
     } catch (error) {
         response = apiResponse(false, 500, error.message, null);
     }
-    res.status(200).json(response);    
+    return res.status(200).json(response);    
 }
 
 const getProduct = async (req, res) => {
@@ -56,7 +58,7 @@ const getProduct = async (req, res) => {
     } catch (error) {
         response = apiResponse(false, 500, error.message, null);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const updateProduct = async (req, res) => {
@@ -67,7 +69,7 @@ const updateProduct = async (req, res) => {
     } catch (error) {
         response = apiResponse(false, 500, error.message, null);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const deleteProduct = async (req, res) => {
@@ -80,7 +82,7 @@ const deleteProduct = async (req, res) => {
     } catch (error) {
         response = apiResponse(false, 500, error.message, null);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 module.exports = {

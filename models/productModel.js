@@ -12,7 +12,20 @@ module.exports = (sequelize, DataTypes) => {
         },
         published: {
             type: DataTypes.BOOLEAN,
+        },
+        user_id: {
+            type:DataTypes.INTEGER
         }
     });
+    Product.associate = models => {
+        Product.hasMany(models.Review, {
+            onDelete: 'cascade'
+        });
+        Product.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
+    }
     return Product;
 }

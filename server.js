@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
+const auth = require("./middlewares/auth");
+const session = require("express-session");
 
 const app = express();
 let corsOption = {
@@ -12,15 +13,22 @@ let corsOption = {
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+}));
 
 // routes
 const productRoutes = require("./routes/productRouter");
 const reviewRoutes = require("./routes/reviewRouter");
-app.use("/api/products", productRoutes);
-app.use("/api/reviews", reviewRoutes);
+const userRoutes = require("./routes/userRouter");
+app.use("/api/products", auth, productRoutes);
+app.use("/api/reviews", auth, reviewRoutes);
+app.use("/api/users", userRoutes);
 
 // default route
-app.get("/", (req, resp) => {
+app.get("/",auth, (req, resp) => {
     resp.status(200).send({
         product_endpoints: {
             "insert product[post]": "/api/products/",

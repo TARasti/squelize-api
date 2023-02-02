@@ -3,6 +3,9 @@ module.exports = (sequelize, DataTypes) => {
         product_id: {
             type: DataTypes.INTEGER
         },
+        user_id: {
+            type: DataTypes.INTEGER
+        },
         rating: {
             type: DataTypes.INTEGER,
         },
@@ -10,5 +13,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT
         }
     });
+    Review.associate = models => {
+        Review.belongsTo(models.Product, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+        Review.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
     return Review;
 }

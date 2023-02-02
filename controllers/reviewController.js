@@ -6,17 +6,20 @@ const Review = db.reviews;
 const createReview = async (req, res) => {
     let response = {};
     try {
+        const user = req.session.user;
         const info = {
             product_id: req.body.product_id,
+            user_id: user.id,
             rating:  req.body.rating,
             description: req.body.description
         };
+        
         const review = await Review.create(info);
         response = apiResponse(true, 200, "Inserting review", review);
     } catch (err) {
         response = apiResponse(false, 500, "Error inserting review", err);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const getReviews = async (req, res) => {
@@ -27,7 +30,7 @@ const getReviews = async (req, res) => {
     } catch (err) {
         response = apiResponse(false, 500, "Error retrieving reviews", err);
     }    
-    res.status(200).json(response);    
+    return res.status(200).json(response);    
 }
 
 const getReview = async (req, res) => {
@@ -38,7 +41,7 @@ const getReview = async (req, res) => {
     } catch (err) {
         response = apiResponse(false, 500, "Error retrieving review", err);        
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const deleteReview = async (req, res) => {
@@ -49,7 +52,7 @@ const deleteReview = async (req, res) => {
     } catch (err) {
         response = apiResponse(false, 500, "Error deleting review", err);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const deleteProductReviews = async (req, res) => {
@@ -60,7 +63,7 @@ const deleteProductReviews = async (req, res) => {
     } catch (err) {
         response = apiResponse(false, 500, "Error deleting reviews", err);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 const updateReview = async (req, res) => {
@@ -71,7 +74,7 @@ const updateReview = async (req, res) => {
     } catch (err) {
         response = apiResponse(false, 500, "Error updating review", err);
     }
-    res.status(200).json(response);
+    return res.status(200).json(response);
 }
 
 module.exports = {
